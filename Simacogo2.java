@@ -1,20 +1,20 @@
 package simacogo;
 
 public class Simacogo2{
-	byte [][] CURRSTATE;																			// Area of Play
-	byte PARENTSCORE;																				// Parents Score
-	byte SCORE;																						// Stores the evaluated score. AI wants positive values and human wants negative values
-	byte ROW;																						// Stores row of move taken to get to this game state
-	byte COL;																						// Stores column of move taken to get to this game state
+	byte [][] CURRSTATE;												// Area of Play
+	byte PARENTSCORE;												// Parents Score
+	byte SCORE;													// Stores the evaluated score. AI wants positive values and human wants negative values
+	byte ROW;													// Stores row of move taken to get to this game state
+	byte COL;													// Stores column of move taken to get to this game state
 
 
 
 	
 	Simacogo2(byte gameState [][], byte parentscore, byte moveRow, byte moveCol){					// Constructor
-		this.CURRSTATE 	= gameState;
+		this.CURRSTATE 		= gameState;
 		this.ROW		= moveRow;
 		this.COL		= moveCol;
-		this.PARENTSCORE= parentscore;
+		this.PARENTSCORE	= parentscore;
 		this.SCORE		= updateScore();
 		
 	}
@@ -45,82 +45,82 @@ public class Simacogo2{
 	
 	// ** Methods for Scoring **  super ugly but fast -- if I get the time I will clean this up  
 	
-	byte updateScore (){																			// Combines points earned by this moves with the score of the game
+	byte updateScore (){												// Combines points earned by this moves with the score of the game
 		return (byte) (PARENTSCORE + getMoveScore());
 	}
 	
 	byte getMoveScore (){
-		byte mScore = 0;																			// Adjacent moves gain 2 points, diagonal moves gain 1 point
-		int token = CURRSTATE[ROW][COL];															// Current players token
+		byte mScore = 0;											// Adjacent moves gain 2 points, diagonal moves gain 1 point
+		int token = CURRSTATE[ROW][COL];									// Current players token
 		
 		
-		if (ROW > 0 && ROW < 8 && COL > 0 && COL < 8){												// Move is not an edge tile so we can look at all adjacent spaces
+		if (ROW > 0 && ROW < 8 && COL > 0 && COL < 8){								// Move is not an edge tile so we can look at all adjacent spaces
 			if (CURRSTATE[ROW -1][COL]	 	== token){ mScore = (byte) (mScore + 2); }				
 			if (CURRSTATE[ROW][COL -1] 		== token){ mScore = (byte) (mScore + 2); }			
 			if (CURRSTATE[ROW][COL +1] 		== token){ mScore = (byte) (mScore + 2); }			
-			if (CURRSTATE[ROW -1][COL -1] 	== token){ mScore = (byte) (mScore + 1); }			
-			if (CURRSTATE[ROW +1][COL +1] 	== token){ mScore = (byte) (mScore + 1); }			
-			if (CURRSTATE[ROW -1][COL +1] 	== token){ mScore = (byte) (mScore + 1); }			
-			if (CURRSTATE[ROW +1][COL -1] 	== token){ mScore = (byte) (mScore + 1); }	
+			if (CURRSTATE[ROW -1][COL -1] 		== token){ mScore = (byte) (mScore + 1); }			
+			if (CURRSTATE[ROW +1][COL +1] 		== token){ mScore = (byte) (mScore + 1); }			
+			if (CURRSTATE[ROW -1][COL +1] 		== token){ mScore = (byte) (mScore + 1); }			
+			if (CURRSTATE[ROW +1][COL -1] 		== token){ mScore = (byte) (mScore + 1); }	
 			if (token == 1){ return mScore;}       else{ return (byte) (0 - mScore); }
 			
 		}
-		else if (ROW == 0 && COL != 0 && COL != 8){													// Move is the bottom row but not in the corners
+		else if (ROW == 0 && COL != 0 && COL != 8){								// Move is the bottom row but not in the corners
 			if (CURRSTATE[ROW][COL -1] 		== token){ mScore = (byte) (mScore + 2); }			
 			if (CURRSTATE[ROW][COL +1] 		== token){ mScore = (byte) (mScore + 2); }			
-			if (CURRSTATE[ROW +1][COL +1] 	== token){ mScore = (byte) (mScore + 1); }			
-			if (CURRSTATE[ROW +1][COL -1] 	== token){ mScore = (byte) (mScore + 1); }		
+			if (CURRSTATE[ROW +1][COL +1] 		== token){ mScore = (byte) (mScore + 1); }			
+			if (CURRSTATE[ROW +1][COL -1] 		== token){ mScore = (byte) (mScore + 1); }		
 			if (token == 1){ return mScore;}       else{ return (byte) (0 - mScore); }
 		}
-		else if (ROW == 0 && COL == 0){																// Move is bottom left corner		
+		else if (ROW == 0 && COL == 0){										// Move is bottom left corner		
 			if (CURRSTATE[ROW][COL +1] 		== token){ mScore = (byte) (mScore + 2); }			
-			if (CURRSTATE[ROW +1][COL +1] 	== token){ mScore = (byte) (mScore + 1); }			
+			if (CURRSTATE[ROW +1][COL +1] 		== token){ mScore = (byte) (mScore + 1); }			
 			if (token == 1){ return mScore;}       else{ return (byte) (0 - mScore); }
 		}
-		else if (ROW == 0 && COL == 8){																// Move is bottom right corner
+		else if (ROW == 0 && COL == 8){										// Move is bottom right corner
 			if (CURRSTATE[ROW][COL -1] 		== token){ mScore = (byte) (mScore + 2); }					
-			if (CURRSTATE[ROW +1][COL -1] 	== token){ mScore = (byte) (mScore + 1); }			
+			if (CURRSTATE[ROW +1][COL -1] 		== token){ mScore = (byte) (mScore + 1); }			
 			if (token == 1){ return mScore;}       else{ return (byte) (0 - mScore); }
 		}
-		else if (ROW == 8 && COL != 0 && COL != 8){													// Move is in top row but not in a corner
+		else if (ROW == 8 && COL != 0 && COL != 8){								// Move is in top row but not in a corner
 			if (CURRSTATE[ROW -1][COL] 		== token){ mScore = (byte) (mScore + 2); }			
 			if (CURRSTATE[ROW][COL -1] 		== token){ mScore = (byte) (mScore + 2); }			
 			if (CURRSTATE[ROW][COL +1] 		== token){ mScore = (byte) (mScore + 2); }			
-			if (CURRSTATE[ROW -1][COL -1] 	== token){ mScore = (byte) (mScore + 1); }			
-			if (CURRSTATE[ROW -1][COL +1] 	== token){ mScore = (byte) (mScore + 1); }			
+			if (CURRSTATE[ROW -1][COL -1] 		== token){ mScore = (byte) (mScore + 1); }			
+			if (CURRSTATE[ROW -1][COL +1] 		== token){ mScore = (byte) (mScore + 1); }			
 			if (token == 1){ return mScore;}       else{ return (byte) (0 - mScore); }
 		}
-		else if (ROW == 8 && COL == 0){																// Move is in top left corner
+		else if (ROW == 8 && COL == 0){										// Move is in top left corner
 			if (CURRSTATE[ROW][COL +1] 		== token){ mScore = (byte) (mScore + 2); }			
 			if (CURRSTATE[ROW -1][COL]	 	== token){ mScore = (byte) (mScore + 2); }			 
-			if (CURRSTATE[ROW -1][COL +1] 	== token){ mScore = (byte) (mScore + 1); }			
+			if (CURRSTATE[ROW -1][COL +1] 		== token){ mScore = (byte) (mScore + 1); }			
 			if (token == 1){ return mScore;}       else{ return (byte) (0 - mScore); }
 			}
-		else if (ROW == 8 && COL == 8){																// Move is in top right corner
+		else if (ROW == 8 && COL == 8){										// Move is in top right corner
 			if (CURRSTATE[ROW][COL -1] 		== token){ mScore = (byte) (mScore + 2); }			
 			if (CURRSTATE[ROW -1][COL] 		== token){ mScore = (byte) (mScore + 2); }			 
-			if (CURRSTATE[ROW -1][COL -1] 	== token){ mScore = (byte) (mScore + 1); }	
+			if (CURRSTATE[ROW -1][COL -1] 		== token){ mScore = (byte) (mScore + 1); }	
 			if (token == 1){ return mScore;}       else{ return (byte) (0 - mScore); }
 		}
-		else if (ROW != 0 && ROW != 8 && COL == 0){													// Move is on left edge but not in a corner
+		else if (ROW != 0 && ROW != 8 && COL == 0){								// Move is on left edge but not in a corner
 			if (CURRSTATE[ROW -1][COL] 		== token){ mScore = (byte) (mScore + 2); }
 			if (CURRSTATE[ROW][COL +1] 		== token){ mScore = (byte) (mScore + 2); }
-			if (CURRSTATE[ROW +1][COL +1] 	== token){ mScore = (byte) (mScore + 1); }
-			if (CURRSTATE[ROW -1][COL +1] 	== token){ mScore = (byte) (mScore + 1); }
+			if (CURRSTATE[ROW +1][COL +1] 		== token){ mScore = (byte) (mScore + 1); }
+			if (CURRSTATE[ROW -1][COL +1] 		== token){ mScore = (byte) (mScore + 1); }
 			if (token == 1){ return mScore;}       else{ return (byte) (0 - mScore); }
-		} else {																					// Move is on the right edge but not in a corner
+		} else {												// Move is on the right edge but not in a corner
 			if (CURRSTATE[ROW -1][COL] 		== token){ mScore = (byte) (mScore + 2); }
 			if (CURRSTATE[ROW][COL -1] 		== token){ mScore = (byte) (mScore + 2); }
-			if (CURRSTATE[ROW +1][COL -1] 	== token){ mScore = (byte) (mScore + 1); }
-			if (CURRSTATE[ROW -1][COL -1] 	== token){ mScore = (byte) (mScore + 1); }
+			if (CURRSTATE[ROW +1][COL -1] 		== token){ mScore = (byte) (mScore + 1); }
+			if (CURRSTATE[ROW -1][COL -1] 		== token){ mScore = (byte) (mScore + 1); }
 			if (token == 1){ return mScore;}       else{ return (byte) (0 - mScore); }
 		}
 	}
 	
 	// ** Prettier version...but it doesn't work at this time...and I ran out of time to debug **
 //	byte getMoveScore (){
-//		byte mScore = 0;																			// Adjacent moves gain 2 points, diagonal moves gain 1 point
-//		int token = CURRSTATE[ROW][COL];															// Current players token
+//		byte mScore = 0;											// Adjacent moves gain 2 points, diagonal moves gain 1 point
+//		int token = CURRSTATE[ROW][COL];									// Current players token
 //		
 //		// ** Move is in the interior **
 //		if (ROW > 0 && ROW < 8 && COL > 0 && COL < 8){												
